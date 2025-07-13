@@ -32,7 +32,7 @@ def studentsView(request):
 # Complex data --> Serializers --> JSON(XML)
 
 
-@api_view(['GET','PUT'])
+@api_view(['GET','PUT', 'DELETE'])
 def studentDetailView(requst, pk):
     try:
         student = Student.objects.get(pk=pk)
@@ -50,3 +50,7 @@ def studentDetailView(requst, pk):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    elif requst.method == 'DELETE':
+        student.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
