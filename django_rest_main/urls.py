@@ -23,5 +23,6 @@ urlpatterns = [
     path('students/', include('students.urls')),
     # API Endpoint
     path('api/v1/', include('api.urls'))  
+    # path('')
 
 ]
