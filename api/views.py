@@ -5,14 +5,21 @@ from api.serializers import StudentSerializer
 from students.models import Student
 
 
-# DRF serializ
-@api_view(['GET'])
+# DRF serializatio
+@api_view(['GET', 'POST'])
 def studentsView(request):
     if request.method == 'GET':
         # get all the data from the student table
         Students = Student.objects.all()
         serializer = StudentSerializer(Students, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == 'POST':
+        serializer = StudentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
