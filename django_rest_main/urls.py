@@ -19,5 +19,9 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('students/', include('students.urls'))
+    # web application Endpoint
+    path('students/', include('students.urls')),
+    # API Endpoint
+    path('api/v1/', include('api.urls'))  
+
 ]
