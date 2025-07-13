@@ -32,7 +32,7 @@ def studentsView(request):
 # Complex data --> Serializers --> JSON(XML)
 
 
-@api_view(['GET'])
+@api_view(['GET','PUT'])
 def studentDetailView(requst, pk):
     try:
         student = Student.objects.get(pk=pk)
@@ -42,3 +42,11 @@ def studentDetailView(requst, pk):
     if requst.method == 'GET':
         serializer = StudentSerializer(student)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    elif requst.method == 'PUT':
+        serializer = StudentSerializer(student, data=requst.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
