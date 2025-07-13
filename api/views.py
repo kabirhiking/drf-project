@@ -1,8 +1,10 @@
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
-from api.serializers import StudentSerializer
+from api.serializers import EmployeeSerializer, StudentSerializer
 from students.models import Student
+from rest_framework.views import APIView
+from employees.models import Employee
 
 
 # DRF serializatio
@@ -54,3 +56,12 @@ def studentDetailView(requst, pk):
     elif requst.method == 'DELETE':
         student.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+class Employees(APIView):
+    def get(self, request):
+        empployees = Employee.objects.all()
+        serializer = EmployeeSerializer(empployees, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        
