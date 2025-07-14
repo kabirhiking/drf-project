@@ -141,3 +141,4 @@ class EmployeeDetail(generics.RetrieveAPIView):
     pass
     # queryset = Employee.objects.all()
     # serializer_class = EmployeeSerializer
+    
