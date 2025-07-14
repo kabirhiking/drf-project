@@ -6,7 +6,7 @@ from students.models import Student
 from rest_framework.views import APIView
 from employees.models import Employee
 from django.http import Http404
-from rest_framework import mixins, generics
+from rest_framework import mixins, generics, viewsets
 
 
 
@@ -130,7 +130,7 @@ def studentDetailView(requst, pk):
     # def delete(self, request, pk):
     #     return self.destroy(request, pk)
 
-
+"""
 # Generics
 class Employees(generics.ListCreateAPIView):
      queryset = Employee.objects.all()
@@ -141,5 +141,19 @@ class EmployeeDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
     lookup_field = 'pk' 
+ """
     
     
+class EmployeeViewset(viewsets.ViewSet):
+    def list(self, request):
+        queryset = Employee.objects.all()
+        serializer = EmployeeSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    def create(self, request):
+        serializer = EmployeeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors)
+        
